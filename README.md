@@ -2,7 +2,7 @@
 
 在 DeepSeek Harness 内搭建和持续管理一个有来源、有权限边界的 AI 分身。原生工作台提供“项目沉淀、分身能力、通道连接、身份与规则”四个常驻模块，首次搭建后可在日常管理中继续补材料、更新能力、处理审批和检查回执。
 
-原生版面向 **DeepSeek Harness Web / Desktop 0.2.1-rc.2、0.2.1-rc.3 / Node.js 22.13+**。Desktop 已验证安装启用、真实模型整理蒸馏、候选试跑与明确采用、日报和材料回流；真实 Slack 收发仍待验收，完整证据见 [0.4 发布说明](https://github.com/oxmumu3/ai-twin-starter/blob/132996e3fc112e78b84c4215b63fb070a9dbc404/docs/release-0.4.md)。其他宿主版本需重新验证。模型使用宿主配置，Slack 需要你自己的应用授权。完整路径见 [原生运行手册](docs/native.md)。
+原生版面向 **DeepSeek Harness Web / Desktop 0.2.1-rc.2、0.2.1-rc.3、0.2.1-rc.4、0.2.1-rc.5 / Node.js 22.13+**。Desktop 已验证安装启用、真实模型整理蒸馏、候选试跑与明确采用、日报和材料回流；真实 Slack 收发仍待验收，完整证据见 [0.4 发布说明](https://github.com/oxmumu3/ai-twin-starter/blob/132996e3fc112e78b84c4215b63fb070a9dbc404/docs/release-0.4.md)。其他宿主版本需重新验证。模型使用宿主配置，Slack 需要你自己的应用授权。完整路径见 [原生运行手册](docs/native.md)。
 
 用已有工作 Agent，按四步搭分身：**准备分身材料 → 蒸馏分身 → 连接通道 → 设定权限**。
 

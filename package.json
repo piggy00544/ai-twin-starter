@@ -1,6 +1,6 @@
 {
   "name": "@oxmumu3/dsh-agent-twin",
-  "version": "0.4.0-preview.4",
+  "version": "0.4.0-preview.5",
   "description": "DSH-native AI twin: persistent project materials, evidence-backed capability versions, authorized channels, identity rules and service receipts.",
   "type": "module",
   "license": "MIT",
@@ -11,7 +11,7 @@
   },
   "engines": {
     "node": ">=22.13",
-    "dsh": "0.2.1-rc.2 || 0.2.1-rc.3"
+    "dsh": "0.2.1-rc.2 || 0.2.1-rc.3 || 0.2.1-rc.4 || 0.2.1-rc.5"
   },
   "exports": {
     ".": "./index.js",
@@ -39,7 +39,8 @@
     "docs/native.md"
   ],
   "scripts": {
-    "test": "node --test test/*.test.mjs"
+    "test": "node --test test/*.test.mjs",
+    "compatibility:check": "node scripts/compatibility.mjs --latest"
   },
   "dsh": {
     "manifestVersion": 1,
@@ -61,14 +62,14 @@
     }
   },
   "peerDependencies": {
-    "@deepseek-ai/dsh-tools": "0.2.1-rc.2 || 0.2.1-rc.3",
+    "@deepseek-ai/dsh-tools": "0.2.1-rc.2 || 0.2.1-rc.3 || 0.2.1-rc.4 || 0.2.1-rc.5",
     "@deepseek-ai/schemastery": "3.18.5",
-    "@deepseek-ai/dsh-llm": "0.2.1-rc.2 || 0.2.1-rc.3"
+    "@deepseek-ai/dsh-llm": "0.2.1-rc.2 || 0.2.1-rc.3 || 0.2.1-rc.4 || 0.2.1-rc.5"
   },
   "devDependencies": {
-    "@deepseek-ai/dsh-tools": "0.2.1-rc.2 || 0.2.1-rc.3",
+    "@deepseek-ai/dsh-tools": "0.2.1-rc.2 || 0.2.1-rc.3 || 0.2.1-rc.4 || 0.2.1-rc.5",
     "@deepseek-ai/schemastery": "3.18.5",
-    "@deepseek-ai/dsh-llm": "0.2.1-rc.2 || 0.2.1-rc.3"
+    "@deepseek-ai/dsh-llm": "0.2.1-rc.2 || 0.2.1-rc.3 || 0.2.1-rc.4 || 0.2.1-rc.5"
   },
   "publishConfig": {
     "access": "public",
