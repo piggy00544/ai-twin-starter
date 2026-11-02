@@ -18,7 +18,7 @@ export async function planSdk(args) {
   for (const name of ['dsh-storage', 'dsh-storage-domain', 'dsh-storage-json', 'dsh-client-connection']) dependencies['@deepseek-ai/' + name] = sdk;
   // Retain Finder's measured VM-fixture suite baseline; all other Node processes stay at 128 MB.
   const suiteHeapMb = metadata.name === '@oxmumu3/dsh-plugin-finder' ? 512 : 128;
-  const minimumTests = metadata.name === '@oxmumu3/dsh-plugin-finder' ? 763 : 256;
+  const minimumTests = metadata.name === '@oxmumu3/dsh-plugin-finder' ? 768 : 260;
   return { sdk, dependencies, suiteHeapMb, minimumTests, otherNodeHeapMb: 128, compatibilityOverride: false, hooks: false };
 }
 export function validateTap(text, minimumTests) {
