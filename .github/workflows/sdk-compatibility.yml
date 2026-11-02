@@ -1,0 +1,85 @@
+name: SDK compatibility
+on:
+  workflow_call:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '17 3,15 * * *'
+permissions:
+  contents: read
+concurrency:
+  group: sdk-compatibility-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+defaults:
+  run:
+    shell: bash
+jobs:
+  matrix:
+    if: github.repository == 'oxmumu3/ai-twin-starter'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: 22.22.0
+          package-manager-cache: false
+      - name: Reject an unvalidated official latest SDK
+        run: node scripts/compatibility.mjs --latest
+      - name: Derive the exact supported SDK matrix
+        id: matrix
+        run: |
+          set -euo pipefail
+          matrix="$(node scripts/compatibility.mjs --matrix)"
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+  sdk:
+    needs: matrix
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix: ${{ fromJson(needs.matrix.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: 22.22.0
+          package-manager-cache: false
+      - name: Test exact official SDK with synthetic state and denied runtime network
+        env:
+          DSH_CI_SDK: ${{ matrix.sdk }}
+          DSH_CI_OUTPUT: ${{ runner.temp }}/sdk-results/${{ matrix.sdk }}
+        run: node --max-old-space-size=128 scripts/ci-sdk.mjs --sdk "$DSH_CI_SDK"
+      - name: Preserve bounded SDK test evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: sdk-compatibility-${{ matrix.sdk }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/sdk-results/${{ matrix.sdk }}/
+          if-no-files-found: error
+          retention-days: 7
+          include-hidden-files: false
+  latest:
+    needs: [matrix, sdk]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: 22.22.0
+          package-manager-cache: false
+      - name: Recheck official latest after every SDK passed
+        run: node scripts/compatibility.mjs --latest

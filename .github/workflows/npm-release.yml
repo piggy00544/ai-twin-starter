@@ -22,7 +22,13 @@ defaults:
   run:
     shell: bash
 jobs:
+  compatibility:
+    if: ${{ github.event_name == 'workflow_dispatch' && github.repository == 'oxmumu3/ai-twin-starter' && github.ref == 'refs/heads/main' }}
+    permissions:
+      contents: read
+    uses: ./.github/workflows/sdk-compatibility.yml
   validate:
+    needs: compatibility
     name: Validate source and pack
     if: ${{ github.event_name == 'workflow_dispatch' && github.repository == 'oxmumu3/ai-twin-starter' && github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
@@ -54,6 +60,8 @@ jobs:
         run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Check source and build the actual package
         run: node --test test/native-package.test.mjs test/native-client.test.mjs test/native-plugin.test.mjs
+      - name: Recheck official latest immediately before packing
+        run: node scripts/compatibility.mjs --latest
       - name: Pack and validate the exact release artifact
         id: pack
         env:
